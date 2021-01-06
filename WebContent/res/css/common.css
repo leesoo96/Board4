@@ -1,0 +1,73 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'Jal_Onuel';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Jal_Onuel.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+	box-sizing: border-box;
+	font-family: 'Jal_Onuel';
+}
+html, body, ul, li {
+	margin: 0; padding: 0;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+}
+a {
+	text-decoration: none;
+}
+
+#container {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+header {
+	background-color: #C3E3FF;
+	height: 65px;
+}
+header ul {
+	list-style: none;
+}
+header ul:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+header li {
+	float: left;
+	width: 110px;
+	height: 65px;
+}
+header li:hover {
+	background-color: #F7F0FF;
+}
+header a {
+	display: block;
+	color: black;
+	font-size: 18px;
+	text-align: center;
+	padding: 24px 16px; 
+}
+
+#container section {
+	flex-grow: 1;
+}
+
+.centerCont {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+section {
+	position: relative;
+}

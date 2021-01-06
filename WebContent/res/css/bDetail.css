@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+#detailWrap{
+	margin: 20px;
+}
+
+.cmt_mod_form {
+	display : none;
+}
+
+#favoriteFunc {
+	position: absolute;
+	left: 367px;
+	top: 31px;
+	font-size: 20px;
+	color: #526FFF;
+	cursor: pointer;
+}
