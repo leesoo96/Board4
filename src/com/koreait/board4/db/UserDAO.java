@@ -9,11 +9,11 @@ import com.koreait.board4.model.UserModel;
 
 public class UserDAO {
 
-	public static int selUser(UserModel p) {
+	public static UserModel selUser(UserModel p) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = " select i_user, user_id, user_pw, salt "
+		String sql = " select i_user, nm, user_pw, salt "
 					 + " from t_user "
 					 + " where user_id = ? ";
 		
@@ -24,23 +24,20 @@ public class UserDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				String dbPw = rs.getString("user_pw");
-				String salt = rs.getString("salt");
-				String securityPw = SecurityUtils.getSecurePassword(p.getUser_pw(), salt);
+				UserModel um = new UserModel();
+				um.setI_user(rs.getInt("i_user"));
+				um.setNm(rs.getString("nm"));
+				um.setUser_pw(rs.getString("user_pw"));
+				um.setSalt(rs.getString("salt"));
 				
-				if(securityPw.equals(dbPw)) {
-					return 1;
-				}else {
-					return 3;
-				}		
+				return um;
 			}
-			return 2;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBUtils.close(conn, pstmt, rs);
 		}
 		
-		return 0;
+		return null;
 	}
 }
