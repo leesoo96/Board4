@@ -15,7 +15,7 @@
 				<div><input type="submit" value="로그인"></div>
 			</form>
 			<div>${msg }</div>
-			<a href="/join">회원가입</a>
+			<a href="/user/join.korea">회원가입</a>
 		</div>
 	</div>
 </body>

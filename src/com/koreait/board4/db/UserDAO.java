@@ -3,19 +3,26 @@ package com.koreait.board4.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.catalina.connector.Request;
 
 import com.koreait.board4.common.SecurityUtils;
+import com.koreait.board4.common.Utils;
 import com.koreait.board4.model.UserModel;
 
-public class UserDAO {
+public class UserDAO extends CommonDAO{
 
+//	로그인
 	public static UserModel selUser(UserModel p) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = " select i_user, nm, user_pw, salt "
-					 + " from t_user "
-					 + " where user_id = ? ";
+		String sql = " SELECT i_user, nm, user_pw, salt "
+					 + " FROM t_user "
+					 + " WHERE user_id = ? ";
 		
 		try {
 			conn = DBUtils.getConn();
@@ -39,5 +46,41 @@ public class UserDAO {
 		}
 		
 		return null;
+	}
+	
+//	회원가입
+	public static int joinUser(HttpServletRequest request) {
+		String user_id = request.getParameter("user_id");
+		String user_pw = request.getParameter("user_pw");
+		String salt = SecurityUtils.getSalt();
+		String nm = request.getParameter("nm");
+		int gender = Utils.getIntParam(request, "gender");
+		String phone = request.getParameter("phone");
+		String secPw = SecurityUtils.getSecurePassword(user_pw, salt);
+		
+		String sql = " INSERT INTO t_user "
+					 + " (user_id, user_pw, salt, nm, gender, phone) "
+					 + " values (?, ?, ?, ?, ?, ?) ";
+		
+		UserModel um = new UserModel();
+		um.setUser_id(user_id);
+		um.setUser_pw(secPw);
+		um.setSalt(salt);
+		um.setNm(nm);
+		um.setGender(gender);
+		um.setPhone(phone);
+		
+		return CommonDAO.executeUpdate(sql, new SQLInterUpdate() {
+			
+			@Override
+			public void proc(PreparedStatement pstmt) throws SQLException {
+				pstmt.setString(1, user_id);
+				pstmt.setString(2, secPw);
+				pstmt.setString(3, salt);
+				pstmt.setString(4, nm);
+				pstmt.setInt(5, gender);
+				pstmt.setString(6, phone);
+			}
+		});
 	}
 }

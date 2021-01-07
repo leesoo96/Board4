@@ -25,8 +25,15 @@
 			  	<li>${loginUser.nm } 님, 환영합니다!</li>
 			    <li><a href="/user/logout.korea">로그아웃</a></li>
 			  </c:if>
-			  			
-			  <!-- TODO 메뉴 표출 -->
+			  <!-- 목록 표출 미완 -->
+			  <!-- 게시판 목록 표출 -->
+			  <c:forEach items="${menus}" var="item">
+			  	<li>
+			  		<a href="/board/list.korea?typ=${item.typ }">
+			  			${item.nm }
+			  		</a>
+			  	</li>
+			  </c:forEach>
 			</ul>
 		</header>
 		<section>

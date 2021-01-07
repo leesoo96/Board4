@@ -10,7 +10,7 @@
 <body>
 	<div>
 		<div> 
-			<form id="joinFrm" action="/join" method="post" onsubmit="return joinConfirm();">
+			<form id="joinFrm" action="/user/joinProc.korea" method="post" onsubmit="return joinConfirm();">
 				<div><input type="text" name="user_id" placeholder="아이디" required></div>
 				<div><input type="password" name="user_pw" placeholder="비밀번호" required></div>
 				<div><input type="password" name="user_pw_chk" placeholder="비밀번호 확인"></div>
@@ -25,7 +25,6 @@
 				</div>
 				<div><input type="submit" value="회원가입"></div>
 			</form>
-			<a href="/login">로그인</a>
 		</div>
 	</div>
 </body>

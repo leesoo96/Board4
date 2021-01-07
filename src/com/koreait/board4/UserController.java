@@ -11,7 +11,6 @@ import com.koreait.board4.common.SecurityUtils;
 import com.koreait.board4.common.Utils;
 import com.koreait.board4.db.UserDAO;
 import com.koreait.board4.model.UserModel;
-import com.mysql.cj.Session;
 
 public class UserController {
 //	로그인 페이지 표출(get)
@@ -30,6 +29,7 @@ public class UserController {
 		UserModel loginUser = UserDAO.selUser(model);
 		
 		if(loginUser == null) { // 아이디 없음
+			request.setAttribute("msg",  "아이디가 없습니다. 아이디를 확인해주세요");
 			login(request, response);
 			return;
 		}
@@ -39,15 +39,36 @@ public class UserController {
 		String securityPw = SecurityUtils.getSecurePassword(user_pw, dbSalt);
 		
 		if(!securityPw.equals(dbPw)) {
-//			이상이 생김
+			request.setAttribute("msg",  "비밀번호가 틀립니다. 비밀번호를 확인해주세요");
+//			비밀번호 다름
 			login(request, response);
 		}else{
+//			로그인 성공
 			HttpSession session = request.getSession();
 			model.setUser_pw(null);
 			model.setSalt(null);
 			
-//			이상 없음
+			session.setAttribute("loginUser", loginUser);
+			
 			response.sendRedirect("/board/list.korea");
+		}
+	}
+	
+//	회원가입 페이지 표출(get)
+	public void join(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Utils.forwardTemp("회원가입", "temp/basic_temp", "user/join", request, response);
+	}
+	
+//	회원가입
+	public void joinProc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int result = UserDAO.joinUser(request);
+
+		if(result != 1) {
+//			회원가입 오류 발생 시 회원가입 화면으로 이동
+			join(request, response);
+		}else {
+//			회원가입 성공 시 로그인 화면으로 이동
+			login(request, response);
 		}
 	}
 }
