@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.koreait.board4.common.SecurityUtils;
 import com.koreait.board4.db.CommonDAO;
 
 public class Controller {
@@ -41,8 +42,9 @@ public class Controller {
 			case "loginProc.korea":
 				uCont.loginProc(request, response);
 				return;
-//			case "logout.korea":
-				
+			case "logout.korea":
+				uCont.logout(request, response);
+				return;
 			case "join.korea":
 				uCont.join(request, response);
 				return;
@@ -52,17 +54,24 @@ public class Controller {
 			}
 			
 			break;
-		case "board":
-			
-			switch (urlArr[2]) {
-			case "list.korea":
-				bCont.list(request,response);
-				return;
-//			case "regmod.korea":
-				
+		}
+		
+//		로그인한 사용자만 사용할 수 있는 기능
+		if(SecurityUtils.getLoginI_UserPK(request) > 0) {
+			switch (urlArr[1]) {
+			case "board":
+				switch (urlArr[2]) {
+				case "list.korea": // 글목록
+					bCont.list(request,response);
+					return;
+				case "regProc.korea": // 글쓰기
+					bCont.reg(request, response);
+					return;
+				case "modProc.korea": // 글수정
+					bCont.mod(request, response);
+					return;
+				}
 			}
-			
-			break;	
 		}
 		goToErr(request, response);
 	}

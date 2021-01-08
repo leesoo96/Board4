@@ -7,9 +7,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.koreait.board4.model.BoardModel;
 import com.koreait.board4.model.ManageBoardModel;
 
 public class CommonDAO {
+//  insert, update, delete 에서 사용
+	public static int executeUpdate(String sql, SQLInterUpdate siu) {
+		 Connection conn = null;
+		 PreparedStatement pstmt = null;
+		 
+		 try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			siu.proc(pstmt);
+			
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtils.close(conn, pstmt);
+		}
+		 
+		 return 0;
+	}
+	
 //	게시판 메뉴 목록 확인
 	public static List<ManageBoardModel> selMenuList(){
 		List<ManageBoardModel> list = new ArrayList<ManageBoardModel>();
@@ -40,25 +61,5 @@ public class CommonDAO {
 		}
 		
 		return list;
-	}
-	
-//  insert, update, delete 에서 사용
-	public static int executeUpdate(String sql, SQLInterUpdate siu) {
-		 Connection conn = null;
-		 PreparedStatement pstmt = null;
-		 
-		 try {
-			conn = DBUtils.getConn();
-			pstmt = conn.prepareStatement(sql);
-			siu.proc(pstmt);
-			
-			return pstmt.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBUtils.close(conn, pstmt);
-		}
-		 
-		 return 0;
 	}
 }

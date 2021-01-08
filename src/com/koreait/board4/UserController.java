@@ -54,6 +54,14 @@ public class UserController {
 		}
 	}
 	
+//	로그아웃
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		session.invalidate();
+		
+		response.sendRedirect("/user/login.korea");
+	}
+	
 //	회원가입 페이지 표출(get)
 	public void join(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utils.forwardTemp("회원가입", "temp/basic_temp", "user/join", request, response);

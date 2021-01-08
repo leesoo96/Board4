@@ -55,9 +55,9 @@ public class SecurityUtils {
 //	------------------------------------------------------------------------
 	
 //	i_user -> 글 작성자
-	public static int getLoginI_User(HttpServletRequest request) {
+	public static int getLoginI_UserPK(HttpServletRequest request) {
 		UserModel m = getLoginUser(request);
 		
-		return m.getI_user();
+		return m == null ? 0 : m.getI_user();
 	}
 }
