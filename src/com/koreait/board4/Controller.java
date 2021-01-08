@@ -27,7 +27,7 @@ public class Controller {
 		
 //		게시판 메뉴 가져오기
 		ServletContext application = request.getServletContext();
-		if(application.getAttribute("menus") != null) {
+		if(application.getAttribute("menus") == null) {
 			application.setAttribute("menus", CommonDAO.selMenuList());
 		}
 		

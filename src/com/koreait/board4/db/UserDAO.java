@@ -62,14 +62,6 @@ public class UserDAO extends CommonDAO{
 					 + " (user_id, user_pw, salt, nm, gender, phone) "
 					 + " values (?, ?, ?, ?, ?, ?) ";
 		
-		UserModel um = new UserModel();
-		um.setUser_id(user_id);
-		um.setUser_pw(secPw);
-		um.setSalt(salt);
-		um.setNm(nm);
-		um.setGender(gender);
-		um.setPhone(phone);
-		
 		return CommonDAO.executeUpdate(sql, new SQLInterUpdate() {
 			
 			@Override
