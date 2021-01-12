@@ -52,6 +52,15 @@ public class Controller {
 				uCont.joinProc(request, response);
 				return;
 			}
+		case "board":
+			switch (urlArr[2]) {
+			case "list.korea": // 글목록
+				bCont.list(request,response);
+				return;
+			case "detail.korea":
+				bCont.detail(request, response);
+				return;
+			}
 			
 			break;
 		}
@@ -61,14 +70,17 @@ public class Controller {
 			switch (urlArr[1]) {
 			case "board":
 				switch (urlArr[2]) {
-				case "list.korea": // 글목록
-					bCont.list(request,response);
-					return;
-				case "regProc.korea": // 글쓰기
+				case "reg.korea":
 					bCont.reg(request, response);
 					return;
-				case "modProc.korea": // 글수정
+				case "regProc.korea": // 글쓰기
+					bCont.regProc(request, response);
+					return;
+				case "mod.korea":
 					bCont.mod(request, response);
+					return;
+				case "modProc.korea": // 글수정
+					bCont.modProc(request, response);
 					return;
 				}
 			}

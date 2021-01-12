@@ -4,7 +4,16 @@ public class BoardSEL extends BoardModel{
 
 	private String nm; // 작성자 이름
 	private int is_favorite; // 좋아요 
+	private int favorite_cnt;
 	
+	public int getFavorite_cnt() {
+		return favorite_cnt;
+	}
+
+	public void setFavorite_cnt(int favorite_cnt) {
+		this.favorite_cnt = favorite_cnt;
+	}
+
 	public int getIs_favorite() {
 		return is_favorite;
 	}

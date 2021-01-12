@@ -1,6 +1,6 @@
 // 글 번호 클릭 시  해당 url로 이동
 function clickArticle(i_board){
-		var url = `bDetail?i_board=${i_board}`;
+		var url = `/board/detail.korea?i_board=${i_board}`;
 		location.href = url; 
 }
 

@@ -6,7 +6,7 @@
 <div>
 	<c:if test="${loginUser != null }">
 		<div>        
-			<a href="/board/reg.korea?typ=${typ }"><button>WRITE</button></a>	
+			<a href="/board/reg.korea?typ=${param.typ == null ? 1 : param.typ}"><button>WRITE</button></a>	
 		</div>
 	</c:if>
 	

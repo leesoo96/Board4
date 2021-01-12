@@ -66,35 +66,58 @@ public class BoardDAO extends CommonDAO{
 	}
 	
 //	게시글 읽기
-	
-//	게시글 쓰기
-	public static int reg(HttpServletRequest request) {
-		int typ = Utils.getIntParam(request, "typ");
-		int seq = Utils.getIntParam(request, "seq");
-		String title = request.getParameter("title");
-		String ctnt = request.getParameter("ctnt");
-		int i_user = Utils.getIntParam(request, "i_user");
-		
+	public static BoardSEL selBoard(BoardParam param) {
+		BoardSEL sel = null;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
-		String sql = " INSERT INTO t_board "
-					 + " (typ, seq, title, ctnt, i_user) "
-					 + " SELECT ?, IFNULL(MAX(seq), 0) + 1 ,"
-					 + " ?, ?, ? "
-					 + " FROM t_board "
-					 + " WHERE typ = ? ";
-		
-		return CommonDAO.executeUpdate(sql, new SQLInterUpdate() {
+		ResultSet rs = null;
+		String sql =  " SELECT A.i_board, A.seq, A.title, A.ctnt, A.r_dt, A.hits, "
+				 	  + " B.i_user, B.nm, "
+				 	  + " ifnull(C.favorite_cnt, 0) AS favorite_cnt, "
+				 	  + " CASE WHEN D.i_board IS NULL THEN 0 ELSE 1 END "
+				 	  + " AS is_favorite " // i_board의 컬럼명 바꿈
+				 	  + " FROM t_board A "
+				 	  + " LEFT JOIN t_user B "
+				 	  + " ON A.i_user = B.i_user "
+				 	  + " LEFT JOIN ( "
+				 	  + " SELECT i_board, COUNT(i_board) AS favorite_cnt "
+				 	  + " FROM t_board_favorite "
+				 	  + " GROUP BY i_board ) "
+				 	  + " C ON A.i_board = C.i_board "
+				 	  + " LEFT JOIN t_board_favorite D "
+				 	  + " ON A.i_board = D.i_board "
+				 	  + " AND D.i_user = ? "
+				 	  + " WHERE A.i_board = ? ";
+
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, param.getI_user());
+			pstmt.setInt(2, param.getI_board());
+			rs = pstmt.executeQuery();
 			
-			@Override
-			public void proc(PreparedStatement pstmt) throws SQLException {
-				pstmt.setInt(1, typ);
-				pstmt.setNString(2, title);
-				pstmt.setNString(3, ctnt);
-				pstmt.setInt(4, i_user);
-				pstmt.setInt(5, typ);
+			if(rs.next()) {
+				sel = new BoardSEL();
+				
+				sel.setI_user(rs.getInt("i_user"));
+				sel.setI_board(rs.getInt("i_board"));
+				sel.setSeq(rs.getInt("seq"));
+				sel.setTitle(rs.getNString("title"));
+				sel.setCtnt(rs.getNString("ctnt"));
+				sel.setR_dt(rs.getString("r_dt"));
+				sel.setHits(rs.getInt("hits"));
+				sel.setNm(rs.getString("nm"));
+				sel.setIs_favorite(rs.getInt("is_favorite"));
+				sel.setFavorite_cnt(rs.getInt("favorite_cnt"));
+				
+				return sel;
 			}
-		});
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtils.close(conn, pstmt, rs);
+		}
+		return sel;
 	}
+	
 }
