@@ -28,7 +28,7 @@ function toggleFavorite(i_board){
 	state = 1 - state; 
 	
 	// get 방식으로 통신
-	axios.get('/board/ajax_favorite', {
+	axios.get('/board/ajax_favorite.korea', {
 		params: {
 			// state 값이 1이면 좋아요안누름 0이면 좋아요 누름 
 			state : state,

@@ -4,6 +4,9 @@
 <link rel="stylesheet" href="/res/css/bDetail.css?ver=1">
 
 <div id="detailWrap">
+	
+<a href="/board/list.korea?typ=${data.typ }">목록으로</a>
+
 <form action="bDetail" method="post" onsubmit="return delConfirm();">
 	<div>
 	번호 : ${data.seq} 조회수 : ${data.hits }<br/>
@@ -16,14 +19,15 @@
 	</div>
 </form>
 
-<c:if test="${contents.i_user == loginUser.i_user }">
-	<button onclick="clickDel(${data.i_board},${data.typ });">삭제하기</button>
-	<a href="bRegmod?typ=${data.typ }&i_board=${data.i_board}">
-		<button>수정하기</button>
-	</a>
-</c:if>
-
-	<div style="margin:10px;">
+	
+	<c:if test="${loginUser != null }">
+	
+		<c:if test="${data.i_user == loginUser.i_user }">
+			<button onclick="clickDel(${data.i_board},${data.typ });">삭제하기</button>
+			<a href="bRegmod?typ=${data.typ }&i_board=${data.i_board}">
+			<button>수정하기</button>
+			</a>
+		</c:if>
 		<div>
 			<form action="cmt/reg" method="post">
 				<input type="hidden" name="i_board" value="${data.i_board }">
@@ -31,6 +35,7 @@
 				<input type="submit" value="댓글쓰기">
 			</form>
 		</div>
+		</c:if>
 		
 		<div>
 			<table>
@@ -68,6 +73,8 @@
 			</table>
 		</div>
 	</div>
+	
+	<c:if test="${loginUser != null}">
 	<div id="favoriteFunc" is_favorite="${data.is_favorite}" 
 		 onclick="toggleFavorite(${data.i_board});">
 		<c:choose>
@@ -79,10 +86,10 @@
 			</c:otherwise>
 		</c:choose>	
 	</div>
-</div>
+	</c:if>
+
 <a href="/board/list.korea?typ=${data.typ}">돌아가기</a>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
 	<c:if test="${msg != null}">
 		alert('${msg}');

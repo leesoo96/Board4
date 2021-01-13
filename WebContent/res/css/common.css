@@ -28,6 +28,10 @@ a {
 	flex-direction: column;
 }
 
+.selectedMenu { /* 게시판 목록 배경색 지정 - 어떤 게시판을 보고있는지 확인용*/
+	background: #AFFFEC;
+}
+
 header {
 	background-color: #C3E3FF;
 	height: 65px;
@@ -46,7 +50,7 @@ header li {
 	height: 65px;
 }
 header li:hover {
-	background-color: #F7F0FF;
+	border: 2px solid #2888FF;
 }
 header a {
 	display: block;

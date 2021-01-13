@@ -71,7 +71,7 @@ public class BoardDAO extends CommonDAO{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql =  " SELECT A.i_board, A.seq, A.title, A.ctnt, A.r_dt, A.hits, "
+		String sql =  " SELECT A.i_board, A.typ, A.seq, A.title, A.ctnt, A.r_dt, A.hits, "
 				 	  + " B.i_user, B.nm, "
 				 	  + " ifnull(C.favorite_cnt, 0) AS favorite_cnt, "
 				 	  + " CASE WHEN D.i_board IS NULL THEN 0 ELSE 1 END "
@@ -99,8 +99,9 @@ public class BoardDAO extends CommonDAO{
 			if(rs.next()) {
 				sel = new BoardSEL();
 				
-				sel.setI_user(rs.getInt("i_user"));
-				sel.setI_board(rs.getInt("i_board"));
+				sel.setI_user(param.getI_user());
+				sel.setI_board(param.getI_board());
+				sel.setTyp(rs.getInt("typ"));
 				sel.setSeq(rs.getInt("seq"));
 				sel.setTitle(rs.getNString("title"));
 				sel.setCtnt(rs.getNString("ctnt"));
@@ -119,5 +120,4 @@ public class BoardDAO extends CommonDAO{
 		}
 		return sel;
 	}
-	
 }

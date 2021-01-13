@@ -50,7 +50,7 @@ public class UserController {
 			
 			session.setAttribute("loginUser", loginUser);
 			
-			response.sendRedirect("/board/list.korea");
+			response.sendRedirect("/board/list.korea?typ=1");
 		}
 	}
 	

@@ -82,6 +82,9 @@ public class Controller {
 				case "modProc.korea": // 글수정
 					bCont.modProc(request, response);
 					return;
+				case "ajax_favorite.korea":
+					bCont.fav(request, response);
+					return;
 				}
 			}
 		}
