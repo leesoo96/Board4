@@ -20,22 +20,40 @@ public class UserDAO extends CommonDAO{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String sql = " SELECT i_user, nm, user_pw, salt "
+		String sql = " SELECT * "
 					 + " FROM t_user "
-					 + " WHERE user_id = ? ";
+					 + " WHERE ";
+		
+		if(p.getUser_id() != null) {
+			sql += " user_id = ?";
+		}else if(p.getI_user() > 0) {
+			sql += " i_user = ?";
+		}
 		
 		try {
 			conn = DBUtils.getConn();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, p.getUser_id());
+			
+			if(p.getUser_id() != null) {
+				pstmt.setString(1, p.getUser_id());
+			}else if(p.getI_user() > 0) {
+				pstmt.setInt(1, p.getI_user());
+			}
+			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
 				UserModel um = new UserModel();
 				um.setI_user(rs.getInt("i_user"));
+				um.setUser_id(rs.getString("user_id"));
 				um.setNm(rs.getString("nm"));
 				um.setUser_pw(rs.getString("user_pw"));
 				um.setSalt(rs.getString("salt"));
+				um.setNm(rs.getString("nm"));
+				um.setGender(rs.getInt("gender"));
+				um.setPhone(rs.getString("phone"));
+				um.setProfile_img(rs.getString("profile_img"));
+				um.setR_dt(rs.getString("r_dt"));
 				
 				return um;
 			}

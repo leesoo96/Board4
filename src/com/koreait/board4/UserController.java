@@ -1,6 +1,10 @@
 package com.koreait.board4;
 
+import java.io.File;
 import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +13,12 @@ import javax.servlet.http.HttpSession;
 
 import com.koreait.board4.common.SecurityUtils;
 import com.koreait.board4.common.Utils;
+import com.koreait.board4.db.SQLInterUpdate;
 import com.koreait.board4.db.UserDAO;
 import com.koreait.board4.model.UserModel;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 public class UserController {
 //	로그인 페이지 표출(get)
@@ -45,8 +53,12 @@ public class UserController {
 		}else{
 //			로그인 성공
 			HttpSession session = request.getSession();
+			model.setUser_id(null);
 			model.setUser_pw(null);
 			model.setSalt(null);
+			model.setPhone(null);
+			model.setR_dt(null);
+			model.setProfile_img(null);
 			
 			session.setAttribute("loginUser", loginUser);
 			
@@ -78,5 +90,68 @@ public class UserController {
 //			회원가입 성공 시 로그인 화면으로 이동
 			login(request, response);
 		}
+	}
+
+//	프로필
+	public void profile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		UserModel p = new UserModel();
+		p.setI_user(SecurityUtils.getLoginI_UserPK(request));
+		
+		
+		request.setAttribute("data", UserDAO.selUser(p));
+		
+		Utils.forwardTemp("프로필", "temp/basic_temp", "user/profile", request, response);
+	}
+	
+//	프로필 사진 업로드
+	public void profileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int i_user = SecurityUtils.getLoginI_UserPK(request);
+		String savePath = request.getServletContext().getRealPath("res/img/" + i_user);
+		int sizeLimit = 104_857_600; // 100MB로 사이즈 제한
+		
+		File folder = new File(savePath);
+		if(!folder.exists()) {
+			folder.mkdir();
+		}
+		
+		try {
+			MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
+		
+	//		파일 이름 얻어오기
+			Enumeration files = multi.getFileNames();
+			
+			if(files.hasMoreElements()) {
+//				input에 설정해놓은 name
+				String ElementName = (String)files.nextElement();
+				System.out.println("ElementName : " + ElementName);
+				
+//				실제로 저장되는 파일 이름 
+				String fileName2 = multi.getFilesystemName(ElementName);
+				System.out.println("fileName2 : " + fileName2);
+				
+	//			파일 타입 가져오기
+				String fileType = multi.getContentType(ElementName);
+				System.out.println("fileType : "+fileType);
+				
+				String sql = " UPDATE t_user SET"
+							 + " profile_img = ?"
+							 + " WHERE i_user = ?";
+				
+				UserDAO.executeUpdate(sql, new SQLInterUpdate() {
+					
+					@Override
+					public void proc(PreparedStatement pstmt) throws SQLException {
+						pstmt.setString(1, fileName2);
+						pstmt.setInt(2, i_user);
+					}
+				});
+			}else {
+	//			파일 없음
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		response.sendRedirect("/user/profile.korea");
 	}
 }

@@ -75,3 +75,7 @@ header a {
 section {
 	position: relative;
 }
+
+.profileImg {
+	width: 120px;
+}

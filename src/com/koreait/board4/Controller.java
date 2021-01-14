@@ -57,7 +57,7 @@ public class Controller {
 			case "list.korea": // 글목록
 				bCont.list(request,response);
 				return;
-			case "detail.korea":
+			case "detail.korea": // 글읽기
 				bCont.detail(request, response);
 				return;
 			}
@@ -68,6 +68,15 @@ public class Controller {
 //		로그인한 사용자만 사용할 수 있는 기능
 		if(SecurityUtils.getLoginI_UserPK(request) > 0) {
 			switch (urlArr[1]) {
+			case "user":
+				switch (urlArr[2]) {
+				case "profile.korea": // 프로필
+					uCont.profile(request, response);
+					return;
+				case "profileUpload.korea": // 프로필 사진 업로드
+					uCont.profileUpload(request, response);
+					return;
+				}
 			case "board":
 				switch (urlArr[2]) {
 				case "reg.korea":
@@ -86,6 +95,8 @@ public class Controller {
 					bCont.fav(request, response);
 					return;
 				}
+				
+				break;
 			}
 		}
 		goToErr(request, response);
