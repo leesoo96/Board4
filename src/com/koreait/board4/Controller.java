@@ -70,11 +70,14 @@ public class Controller {
 			switch (urlArr[1]) {
 			case "user":
 				switch (urlArr[2]) {
-				case "profile.korea": // 프로필
+				case "profile.korea": // 프로필 화면 표시
 					uCont.profile(request, response);
 					return;
 				case "profileUpload.korea": // 프로필 사진 업로드
 					uCont.profileUpload(request, response);
+					return;
+				case "delProfileImg.korea": // 기본프로필 사진으로 되돌리기
+					uCont.delProfileImg(request, response);
 					return;
 				}
 			case "board":
