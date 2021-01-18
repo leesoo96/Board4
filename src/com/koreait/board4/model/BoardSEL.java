@@ -5,6 +5,7 @@ public class BoardSEL extends BoardModel{
 	private String nm; // 작성자 이름
 	private int is_favorite; // 좋아요 
 	private int favorite_cnt;
+	private String profile_img; // 프로필 사진
 	
 	public int getFavorite_cnt() {
 		return favorite_cnt;
@@ -28,6 +29,14 @@ public class BoardSEL extends BoardModel{
 
 	public void setNm(String nm) {
 		this.nm = nm;
+	}
+
+	public String getProfile_img() {
+		return profile_img;
+	}
+
+	public void setProfile_img(String profile_img) {
+		this.profile_img = profile_img;
 	}
 	
 	

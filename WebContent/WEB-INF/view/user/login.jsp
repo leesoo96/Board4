@@ -1,12 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>${title}</title>
-</head>
-<body>
+
 	<div>
 		<div>
 			<form action="/user/loginProc.korea" method="post" id="frm">
@@ -18,5 +12,3 @@
 			<a href="/user/join.korea">회원가입</a>
 		</div>
 	</div>
-</body>
-</html>

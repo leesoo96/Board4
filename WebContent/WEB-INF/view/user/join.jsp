@@ -1,13 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>${title}</title>
-<script defer src="/res/js/join.js"></script>
-</head>
-<body>
 	<div>
 		<div> 
 			<form id="joinFrm" action="/user/joinProc.korea" method="post" onsubmit="return joinConfirm();">
@@ -27,5 +19,3 @@
 			</form>
 		</div>
 	</div>
-</body>
-</html>

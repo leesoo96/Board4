@@ -10,7 +10,18 @@
 <form action="bDetail" method="post" onsubmit="return delConfirm();">
 	<div>
 	번호 : ${data.seq} 조회수 : ${data.hits }<br/>
-	작성자 : ${data.nm } 제목 : ${data.title } <br/>
+	작성자 : ${data.nm } 
+	<c:if test="${data.profile_img == null}">
+		<div class="circular--landscape circular--size50">
+			<img id="profileImg" src="/res/img/basic_profile.png">
+		</div>
+	</c:if>
+	<c:if test="${data.profile_img != null}">
+		<div class="circular--landscape circular--size50">
+			<img id="profileImg" src="/res/img/${data.i_user}/${data.profile_img}">
+		</div>
+	</c:if> <br/>
+	제목 : ${data.title } <br/>
 	내용 : ${data.ctnt } <br/>
 	작성날짜 : ${data.r_dt } <br/>
 	

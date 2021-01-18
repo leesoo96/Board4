@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import com.koreait.board4.common.SecurityUtils;
 import com.koreait.board4.common.Utils;
+import com.koreait.board4.db.CommonDAO;
 import com.koreait.board4.db.SQLInterUpdate;
 import com.koreait.board4.db.UserDAO;
 import com.koreait.board4.model.UserModel;
@@ -97,7 +98,6 @@ public class UserController {
 	public void profile(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserModel p = new UserModel();
 		p.setI_user(SecurityUtils.getLoginI_UserPK(request));
-		
 		
 		request.setAttribute("data", UserDAO.selUser(p));
 		request.setAttribute("jsList",  new String[] {"axios.min", "user"});
@@ -196,5 +196,39 @@ public class UserController {
 		String result = "{\"result\":1}";
 		response.setContentType("application/json");
 		response.getWriter().print(result);
+	}
+	
+//	비밀번호 변경 페이지 표시
+	public void changePw_Page(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Utils.forwardTemp("회원가입", "temp/basic_temp", "user/changePw", request, response);
+	}
+	
+//	비밀번호 변경 기능 
+	public void changePwProc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String current_pw = request.getParameter("current_pw");
+		String user_pw = request.getParameter("user_pw");
+		
+		UserModel param = new UserModel();
+		param.setI_user(SecurityUtils.getLoginI_UserPK(request));
+		
+		UserModel userInfo = UserDAO.selUser(param);
+		String encrypCurrentPw = SecurityUtils.getSecurePassword(current_pw, userInfo.getSalt()); 
+		
+		if(!userInfo.getUser_pw().equals(encrypCurrentPw)) { //비밀번호가 틀린 경우
+			request.setAttribute("msg", "기존 비밀번호를 확인해 주세요.");
+			changePw_Page(request, response);
+		}
+		String encrypUserPw = SecurityUtils.getSecurePassword(user_pw, userInfo.getSalt());
+		
+		String sql = " UPDATE t_user SET user_pw = ? WHERE i_user = ? ";
+		UserDAO.executeUpdate(sql, new SQLInterUpdate() {
+			@Override
+			public void proc(PreparedStatement ps) throws SQLException {
+				ps.setString(1, encrypUserPw);
+				ps.setInt(2, SecurityUtils.getLoginI_UserPK(request));
+			}
+		});
+		
+		logout(request, response);
 	}
 }

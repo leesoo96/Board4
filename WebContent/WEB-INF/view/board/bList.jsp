@@ -26,7 +26,19 @@
 			<tr class="pointer" onclick="clickArticle(${item.i_board})">
 				<td>${item.seq}</td>
 				<td>${item.title}</td>
-				<td>${item.nm }</td>
+				<td>
+					${item.nm }
+					<c:if test="${item.profile_img == null}">
+						<div class="circular--landscape circular--size50">
+							<img id="profileImg" src="/res/img/basic_profile.png">
+						</div>
+					</c:if>
+					<c:if test="${item.profile_img != null}">
+						<div class="circular--landscape circular--size50">
+							<img id="profileImg" src="/res/img/${item.i_user}/${item.profile_img}">
+						</div>
+					</c:if>
+				</td>
 				<td>${item.r_dt}</td>
 				<td>${item.hits }</td>
 				<td>${item.is_favorite }</td>

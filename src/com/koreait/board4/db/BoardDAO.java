@@ -24,7 +24,7 @@ public class BoardDAO extends CommonDAO{
 		ResultSet rs = null;
 		
 		String sql = " SELECT A.i_board, A.seq, A.title, A.r_dt, A.hits, "
-					 + " B.i_user, B.nm, "
+					 + " B.i_user, B.nm, B.profile_img, "
 					 + " ifnull(C.favorite_cnt, 0) AS favorite_cnt "
 					 + " FROM t_board A "
 					 + " LEFT JOIN t_user B "
@@ -53,6 +53,7 @@ public class BoardDAO extends CommonDAO{
 				bModel.setHits(rs.getInt("hits"));
 				bModel.setNm(rs.getString("nm"));
 				bModel.setIs_favorite(rs.getInt("favorite_cnt"));
+				bModel.setProfile_img(rs.getString("profile_img"));
 				
 				list.add(bModel);
 			}
@@ -72,7 +73,7 @@ public class BoardDAO extends CommonDAO{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String sql =  " SELECT A.i_board, A.typ, A.seq, A.title, A.ctnt, A.r_dt, A.hits, "
-				 	  + " B.i_user, B.nm, "
+				 	  + " B.i_user, B.nm, B.profile_img,"
 				 	  + " ifnull(C.favorite_cnt, 0) AS favorite_cnt, "
 				 	  + " CASE WHEN D.i_board IS NULL THEN 0 ELSE 1 END "
 				 	  + " AS is_favorite " // i_board의 컬럼명 바꿈
@@ -110,6 +111,7 @@ public class BoardDAO extends CommonDAO{
 				sel.setNm(rs.getString("nm"));
 				sel.setIs_favorite(rs.getInt("is_favorite"));
 				sel.setFavorite_cnt(rs.getInt("favorite_cnt"));
+				sel.setProfile_img(rs.getString("profile_img"));
 				
 				return sel;
 			}

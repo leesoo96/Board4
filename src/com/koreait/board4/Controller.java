@@ -79,6 +79,12 @@ public class Controller {
 				case "delProfileImg.korea": // 기본프로필 사진으로 되돌리기
 					uCont.delProfileImg(request, response);
 					return;
+				case "changePw.korea": // 비밀번호 변경 화면 표시
+					uCont.changePw_Page(request, response);
+					return;
+				case "changePwProc.korea": // 비밀번호 변경 
+					uCont.changePwProc(request, response);
+					return;
 				}
 			case "board":
 				switch (urlArr[2]) {

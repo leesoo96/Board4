@@ -93,4 +93,34 @@ public class UserDAO extends CommonDAO{
 			}
 		});
 	}
+	
+	public static int getCurrent_pw(UserModel p) {
+		UserModel model = null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = " SELECT user_pw as current_pw"
+				+ "FROM t_user WHERE i_user = ?";
+		
+		try {
+			conn = DBUtils.getConn();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, p.getI_user());
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				model = new UserModel();
+				model.setUser_pw(rs.getString("user_pw"));
+				model.setI_user(p.getI_user());
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			DBUtils.close(conn, pstmt, rs);
+		}
+		
+		return 0;
+	}
 }
